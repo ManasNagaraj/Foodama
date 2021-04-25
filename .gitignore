@@ -82,13 +82,13 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+#dist
 
 # Gatsby files
 .cache/
 
 # vuepress build output
-.vuepress/dist
+#.vuepress/dist
 
 # Serverless directories
 .serverless/

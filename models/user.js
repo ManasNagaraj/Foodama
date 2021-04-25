@@ -49,6 +49,9 @@ userSchema = new mongoose.Schema({
     type: String,
     // required: false,
   },
+  currentBMI: {
+    type: Number,
+  },
   googleId: String,
 });
 
