@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocationStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 /*serialize and deserialize functions to cater
@@ -21,14 +22,32 @@ local authentication strategy using passport js
 
 passport configuration done below
 */
-//signup connfiguration
-// passport.get(
-//   'signup',
-//   new LocationStrategy({
-//     usernameField: 'email',
-//     passwordFile: 'password',
-//   })
-// );
+// signup connfiguration
+passport.use(
+  new LocationStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+    },
+    (email, password, done) => {
+      const user = User.findOne({ email: email }).then((user) => {
+        if (user == null) {
+          return done(null, false, { message: 'wrong credentials' });
+        }
+        if (!user.googleId) {
+          if (user.isValidPassword(password)) {
+            return done(null, user);
+          } else {
+            return done();
+          }
+        } else {
+          console.log('login with google');
+          return done(null, false, { message: 'signin with google' });
+        }
+      });
+    }
+  )
+);
 
 /*
 google authentication using OAuth2.0
